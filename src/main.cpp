@@ -19,13 +19,8 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    int choice = 1;
-    while (choice) {
-        if (choice == 0) {
-            cout << "Exiting...\n";
-            break;
-        }
-
+    int choice;
+    while (true) {
         Menu::showMenu();
 
         if (!(cin >> choice)) {
@@ -33,6 +28,10 @@ int main(int argc, char *argv[]) {
             cin.clear();
             cin.ignore(10000, '\n');
             continue;
+        }
+        if (choice == 0) {
+            cout << "Exiting...\n";
+            break;
         }
 
         switch (choice) {
