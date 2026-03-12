@@ -1,8 +1,17 @@
-cmake_minimum_required(VERSION 4.1)
+cmake_minimum_required(VERSION 3.10)
 project(1proj)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
-add_executable(1proj
-        src/main.cpp)
-add_executable(createGraphs src/createGraphs.cpp)
+include_directories(include)
+
+add_executable(main
+        src/main.cpp
+        include/DataLoader.h
+        include/Graph.h
+        include/MutablePriorityQueue.h
+        src/DataLoader.cpp
+        src/Menu.cpp
+        include/Menu.h
+)
+
