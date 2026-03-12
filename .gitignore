@@ -1,0 +1,35 @@
+# --- Compiled Binaries & Objects ---
+*.o
+*.obj
+*.exe
+*.out
+*.app
+# If your executable has a specific name, add it here:
+main
+my_program
+
+# --- Doxygen Output ---
+html/
+latex/
+docs/
+doxygen_sqlite3.db
+
+# --- Build Systems ---
+cmake-build-debug/
+cmake-build-release/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# --- IDEs & Editors ---
+# VS Code
+.vscode/
+# JetBrains / CLion
+.idea/
+*.swp
+*.swo
+
+# --- OS generated files ---
+.DS_Store
+Thumbs.db
