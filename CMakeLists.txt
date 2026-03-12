@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(1proj
         src/main.cpp)
+add_executable(createGraphs src/createGraphs.cpp)
