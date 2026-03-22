@@ -7,11 +7,17 @@ include_directories(include)
 
 add_executable(main
         src/main.cpp
-        include/DataLoader.h
-        include/Graph.h
-        include/MutablePriorityQueue.h
-        src/DataLoader.cpp
-        src/Menu.cpp
-        include/Menu.h
+        src/logic/DataActionUtils.cpp
+        src/logic/DataFileLoader.cpp
+        src/logic/SubmissionViewer.cpp
+        src/logic/ReviewerViewer.cpp
+        src/logic/ParameterViewer.cpp
+        src/graphics/InteractiveMode.cpp
+        src/graphics/Menu.cpp
+        src/graphics/BatchMode.cpp
+        src/io/CsvUtils.cpp
+        src/io/DataEntryParsers.cpp
+        src/io/DataLoader.cpp
+        src/io/ErrorHandler.cpp
+        src/io/ParameterConfigParsers.cpp
 )
-
