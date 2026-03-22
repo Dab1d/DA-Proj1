@@ -9,11 +9,27 @@ Para a entrega de dia 30 de Março, o ficheiro ZIP deve conter:
 ## Estrutura do Projeto
 ```text
 1proj/
-├── data/           # Input datasets (.csv files)
-├── docs/           # Doxygen generated documentation (Git ignored)
-├── include/        # Header files (.h)
-├── src/            # Implementation files (.cpp)
-├── main.cpp        # Entry point
-├── CMakeLists.txt  # Build configuration
-├── Doxyfile        # Doxygen configuration
-└── .gitignore      # Git ignore rules
+├── data/                     # Input datasets (.csv files)
+├── docs/                     # Doxygen generated documentation (Git ignored)
+├── include/                  # Header files
+│   ├── graphics/             # Menu and application mode interfaces
+│   ├── io/                   # File loading, parsing and IO helpers
+│   ├── logic/                # Application actions and business logic helpers
+│   └── structs/              # Core data structures and models
+├── src/                      # Implementation files
+│   ├── graphics/             # Menu, batch mode and interactive mode
+│   ├── io/                   # CSV utilities, parsers, loader and error handling
+│   └── logic/                # Data file actions and viewers
+├── build/                    # CMake build output
+├── CMakeLists.txt            # Build configuration
+├── Doxyfile                  # Doxygen configuration
+├── README.md                 # Project overview
+└── .gitignore                # Git ignore rules
+```
+
+## Organizacao Atual
+- `src/main.cpp` is the entry point and decides whether the program runs in batch mode or interactive mode.
+- `include/graphics/` and `src/graphics/` contain the user interface layer.
+- `include/io/` and `src/io/` contain the CSV reader, parser utilities, loader helpers, output helpers, and error handling.
+- `include/logic/` and `src/logic/` contain the higher-level actions triggered by the interface, such as loading data and showing submissions, reviewers, and parameters.
+- `include/structs/` contains the shared project models such as `Submission`, `Reviewer`, `Parameters`, and graph-related structures.
