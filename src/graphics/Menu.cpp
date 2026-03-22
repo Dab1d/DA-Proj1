@@ -2,15 +2,13 @@
 // Created by conduto on 3/12/26.
 //
 #include <iostream>
-#include "Menu.h"
 #include <limits>
+#include "graphics/Menu.h"
 
 using std::cout;
 using std::cin;
-using std::string;
 using std::numeric_limits;
 using std::streamsize;
-
 /**
  * @brief Displays the main user interface menu to the console.
  * * Provides options for data loading, listing entities, and executing the
@@ -38,7 +36,7 @@ void Menu::showMenu() {
  * * @param prompt The message to display to the user.
  * @return int The valid integer entered by the user.
  */
-int getSafeInteger() {
+int Menu::getSafeInteger() {
     int value;
     while (true) {
         cout << "Select an option: ";
