@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
-#include "Menu.h"
+#include "graphics/BatchMode.h"
+#include "graphics/InteractiveMode.h"
 
-using std::cin;
 using std::cout;
 using std::string;
 
@@ -10,23 +10,6 @@ using std::string;
  * @file main.cpp
  * @brief Entry point for the Conference Assignment Tool.
  */
-
-/**
- * @brief Processes a file in batch mode.
- *
- * @param filename The name of the file to be processed.
- */
-void runBatchMode(const string &filename) {
-    cout << "Running in Batch Mode with file: " << filename << "\n";
-    // TODO: add file processing logic
-}
-
-/**
- * @brief Loads a data file via the interactive menu.
- */
-void loadDataFile() {
-    cout << "Load Data File (Not implemented)\n";
-}
 
 /**
  * @brief Main function of the program.
@@ -42,32 +25,14 @@ void loadDataFile() {
 int main(int argc, char *argv[]) {
     // Check for Batch Mode arguments
     if (argc > 1 && string(argv[1]) == "-b") {
-        if (argc > 2) {
-            runBatchMode(argv[2]);
+        if (argc > 3) {
+            BatchMode::run(argv[2], argv[3]);
         } else {
-            cout << "Error: No file provided for batch mode.\n";
+            cout << "Usage: " << argv[0] << " -b input.csv output.csv\n";
         }
         return 0;
     }
-    while (true) {
-        Menu::showMenu();
 
-        int choice = Menu::getSafeInteger();
-
-        if (choice == 0) {
-            cout << "Exiting...\n";
-            break;
-        }
-
-        switch (choice) {
-            case 1:
-                loadDataFile();
-                break;
-            default:
-                cout << "Option not available yet.\n";
-                break;
-        }
-    }
-
+    InteractiveMode::run();
     return 0;
 }
