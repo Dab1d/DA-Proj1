@@ -9,6 +9,7 @@ using std::cout;
 using std::cin;
 using std::numeric_limits;
 using std::streamsize;
+
 /**
  * @brief Displays the main user interface menu to the console.
  * * Provides options for data loading, listing entities, and executing the
@@ -26,7 +27,6 @@ void Menu::showMenu() {
     cout << "4. Check Parameters"                    << "\n";
     cout << "5. Run Assignment (Max-Flow)"           << "\n";
     cout << "0. Exit"                                << "\n";
-    cout << "Selection: ";
 }
 
 /**
@@ -50,5 +50,27 @@ int Menu::getSafeInteger() {
         cout << "Invalid input. Please enter a valid number.\n";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+}
+
+/**
+ * @brief Waits for the user to request returning to the main menu.
+ */
+void Menu::waitForReturnToMenu() {
+    int value;
+
+    while (true) {
+        cout << "\nPress 42 to return to the menu: ";
+        if (cin >> value) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            if (value == 42) {
+                return;
+            }
+        } else {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        cout << "Invalid input. Please press 1 to return to the menu.\n";
     }
 }

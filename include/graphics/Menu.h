@@ -23,6 +23,11 @@ public:
      * @return int A valid integer provided by the user.
      */
     static int getSafeInteger();
+
+    /**
+     * @brief Waits for the user to confirm returning to the main menu.
+     */
+    static void waitForReturnToMenu();
 };
 
 #endif // MENU_H
