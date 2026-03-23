@@ -10,10 +10,6 @@
 #include "io/DataLoader.h"
 
 using std::cout;
-
-/**
- * @brief Runs the interactive menu loop for the application.
- */
 void InteractiveMode::run() {
     LoadedConferenceData data;
 

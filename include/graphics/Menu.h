@@ -6,7 +6,7 @@
 #define MENU_H
 
 /**
- * @brief Class handling the User Interface and Input Validation.
+ * @brief Handles menu rendering and validated numeric input in the CLI.
  */
 class Menu {
 public:
@@ -18,14 +18,16 @@ public:
 
     /**
      * @brief Safely reads an integer from standard input with validation.
-     * * This function prevents infinite loops by clearing the error state
-     * and flushing the buffer if the user enters non-numeric characters.
-     * @return int A valid integer provided by the user.
+     * @return A valid integer entered by the user.
+     * @time_complexity O(k), where k is the number of invalid attempts before
+     * a valid integer is entered.
      */
     static int getSafeInteger();
 
     /**
      * @brief Waits for the user to confirm returning to the main menu.
+     * @time_complexity O(k), where k is the number of attempts until the user
+     * enters the expected confirmation value.
      */
     static void waitForReturnToMenu();
 };

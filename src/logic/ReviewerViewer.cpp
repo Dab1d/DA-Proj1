@@ -4,17 +4,13 @@
 #include "logic/DataActionUtils.h"
 
 using std::cout;
-
-/**
- * @brief Displays all loaded reviewers.
- * @param data Loaded dataset.
- */
 void ReviewerViewer::listReviewers(const LoadedConferenceData &data) {
     if (!DataActionUtils::ensureDataLoaded(data)) {
         return;
     }
 
-    cout << "\nReviewers loaded from: " << data.sourceFile << "\n";
+    cout << "\nReviewers loaded from: "
+         << DataActionUtils::getDisplayFileName(data.sourceFile) << "\n";
     cout << "-----------------------------------------------------------------\n";
     cout << "Id | Primary | Secondary | Name | Email\n";
     cout << "-----------------------------------------------------------------\n";

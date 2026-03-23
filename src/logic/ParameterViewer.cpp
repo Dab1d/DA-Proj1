@@ -4,11 +4,6 @@
 #include "logic/DataActionUtils.h"
 
 using std::cout;
-
-/**
- * @brief Displays the currently loaded parameters.
- * @param data Loaded dataset.
- */
 void ParameterViewer::printParameters(const LoadedConferenceData &data) {
     if (!DataActionUtils::ensureDataLoaded(data)) {
         return;

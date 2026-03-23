@@ -4,17 +4,13 @@
 #include "logic/DataActionUtils.h"
 
 using std::cout;
-
-/**
- * @brief Displays all loaded submissions.
- * @param data Loaded dataset.
- */
 void SubmissionViewer::listSubmissions(const LoadedConferenceData &data) {
     if (!DataActionUtils::ensureDataLoaded(data)) {
         return;
     }
 
-    cout << "\nSubmissions loaded from: " << data.sourceFile << "\n";
+    cout << "\nSubmissions loaded from: "
+         << DataActionUtils::getDisplayFileName(data.sourceFile) << "\n";
     cout << "--------------------------------------------------------------------------\n";
     cout << "Id | Primary | Secondary | Title | Authors | Email\n";
     cout << "--------------------------------------------------------------------------\n";
