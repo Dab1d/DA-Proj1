@@ -1,6 +1,7 @@
 #include "graphics/InteractiveMode.h"
 
 #include <iostream>
+
 #include "logic/DataFileLoader.h"
 #include "logic/ParameterViewer.h"
 #include "logic/ReviewerViewer.h"
@@ -20,9 +21,8 @@ void InteractiveMode::run() {
         Menu::showMenu();
 
         int choice = Menu::getSafeInteger();
-        if (choice == 0) {
-            break;
-        }
+        if (choice == 0) break;
+
 
         switch (choice) {
             case 1:
@@ -41,6 +41,9 @@ void InteractiveMode::run() {
                 cout << "Option not available yet.\n";
                 break;
         }
+
+        Menu::waitForReturnToMenu();
+
     }
 
     cout << "Exiting...\n";
