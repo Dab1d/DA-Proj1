@@ -9,13 +9,6 @@ using std::cout;
 using std::cin;
 using std::numeric_limits;
 using std::streamsize;
-
-/**
- * @brief Displays the main user interface menu to the console.
- * * Provides options for data loading, listing entities, and executing the
- * assignment algorithm.
- * * @time_complexity O(1)
- */
 void Menu::showMenu() {
     std::cout << "\n";
     cout << "======================================" << "\n";
@@ -29,13 +22,6 @@ void Menu::showMenu() {
     cout << "0. Exit"                                << "\n";
 }
 
-/**
- * @brief Safely reads an integer from standard input with validation.
- * * Handles non-numeric input by clearing the error state and flushing
- * the input buffer to prevent infinite loops.
- * * @param prompt The message to display to the user.
- * @return int The valid integer entered by the user.
- */
 int Menu::getSafeInteger() {
     int value;
     while (true) {
@@ -53,17 +39,14 @@ int Menu::getSafeInteger() {
     }
 }
 
-/**
- * @brief Waits for the user to request returning to the main menu.
- */
 void Menu::waitForReturnToMenu() {
     int value;
 
     while (true) {
-        cout << "\nPress 42 to return to the menu: ";
+        cout << "\nPress 1 to return to the menu: ";
         if (cin >> value) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if (value == 42) {
+            if (value == 1) {
                 return;
             }
         } else {

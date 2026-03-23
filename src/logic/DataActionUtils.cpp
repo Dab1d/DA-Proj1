@@ -1,14 +1,9 @@
 #include "logic/DataActionUtils.h"
 
+#include <filesystem>
 #include <iostream>
 
 using std::cout;
-
-/**
- * @brief Checks whether data has already been loaded.
- * @param data Loaded dataset.
- * @return true if the dataset is available.
- */
 bool DataActionUtils::ensureDataLoaded(const LoadedConferenceData &data) {
     if (data.isLoaded()) {
         return true;
@@ -18,10 +13,30 @@ bool DataActionUtils::ensureDataLoaded(const LoadedConferenceData &data) {
     return false;
 }
 
-/**
- * @brief Prints one topic/expertise value.
- * @param topic Topic value, or -1 if absent.
- */
+std::string DataActionUtils::resolveInputFilePath(const std::string &filePath) {
+    namespace fs = std::filesystem;
+
+    const fs::path inputPath(filePath);
+    if (fs::exists(inputPath)) {
+        return inputPath.string();
+    }
+
+    const fs::path defaultDatasetPath = fs::current_path() / "data" / "DataSamples" / "input" / inputPath;
+    if (fs::exists(defaultDatasetPath)) {
+        return defaultDatasetPath.string();
+    }
+
+    return filePath;
+}
+
+std::string DataActionUtils::getDisplayFileName(const std::string &sourceFile) {
+    if (sourceFile.empty()) {
+        return sourceFile;
+    }
+
+    return std::filesystem::path(sourceFile).filename().string();
+}
+
 void DataActionUtils::printTopic(int topic) {
     if (topic == -1) {
         cout << "-";

@@ -2,12 +2,14 @@
 #define INC_1PROJ_INTERACTIVEMODE_H
 
 /**
- * @brief Handles the interactive command-line execution flow.
+ * @brief Runs the interactive command-line workflow.
  */
 class InteractiveMode {
 public:
     /**
      * @brief Runs the interactive menu loop.
+     * @time_complexity O(m + delegated action costs), where m is the number of
+     * menu iterations performed by the user.
      */
     static void run();
 };

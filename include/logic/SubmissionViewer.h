@@ -4,13 +4,14 @@
 #include "io/DataLoader.h"
 
 /**
- * @brief Displays loaded submissions.
+ * @brief Displays the loaded submissions in interactive mode.
  */
 class SubmissionViewer {
 public:
     /**
      * @brief Displays all loaded submissions.
      * @param data Loaded dataset.
+     * @time_complexity O(S), where S is the number of loaded submissions.
      */
     static void listSubmissions(const LoadedConferenceData &data);
 };

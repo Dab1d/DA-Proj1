@@ -4,13 +4,14 @@
 #include "io/DataLoader.h"
 
 /**
- * @brief Displays loaded parameters.
+ * @brief Displays the currently loaded configuration parameters.
  */
 class ParameterViewer {
 public:
     /**
      * @brief Displays the currently loaded parameters.
      * @param data Loaded dataset.
+     * @time_complexity O(1)
      */
     static void printParameters(const LoadedConferenceData &data);
 };
