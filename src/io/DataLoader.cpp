@@ -8,16 +8,6 @@
 #include "io/DataEntryParsers.h"
 #include "io/ParameterConfigParsers.h"
 
-namespace {
-    enum class Section {
-        None,
-        Submissions,
-        Reviewers,
-        Parameters,
-        Control
-    };
-}
-
 bool LoadedConferenceData::isLoaded() const {
     return !sourceFile.empty();
 }
@@ -26,22 +16,26 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
                              LoadedConferenceData &data,
                              std::vector<std::string> &errors) {
     errors.clear();
-
+    LoadedConferenceData parsedData;
+    parsedData.sourceFile = filePath;
     std::ifstream input(filePath);
     if (!input.is_open()) {
         errors.push_back("could not open file '" + filePath + "'");
         return false;
     }
 
-    LoadedConferenceData parsedData;
-    parsedData.sourceFile = filePath;
 
-    Section currentSection = Section::None;
+    const std::string submissionsSection = "#Submissions";
+    const std::string reviewersSection = "#Reviewers";
+    const std::string parametersSection = "#Parameters";
+    const std::string controlSection = "#Control";
+
+    std::string currentSection;
     std::unordered_set<int> submissionIds;
     std::unordered_set<int> reviewerIds;
     std::set<std::string> parameterKeys;
     std::set<std::string> controlKeys;
-    std::set<Section> seenSections;
+    std::set<std::string> seenSections;
 
     std::string line;
     int lineNumber = 0;
@@ -54,26 +48,26 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
             continue;
         }
 
-        if (trimmedLine == "#Submissions") {
-            currentSection = Section::Submissions;
+        if (trimmedLine == submissionsSection) {
+            currentSection = submissionsSection;
             seenSections.insert(currentSection);
             continue;
         }
 
-        if (trimmedLine == "#Reviewers") {
-            currentSection = Section::Reviewers;
+        if (trimmedLine == reviewersSection) {
+            currentSection = reviewersSection;
             seenSections.insert(currentSection);
             continue;
         }
 
-        if (trimmedLine == "#Parameters") {
-            currentSection = Section::Parameters;
+        if (trimmedLine == parametersSection) {
+            currentSection = parametersSection;
             seenSections.insert(currentSection);
             continue;
         }
 
-        if (trimmedLine == "#Control") {
-            currentSection = Section::Control;
+        if (trimmedLine == controlSection) {
+            currentSection = controlSection;
             seenSections.insert(currentSection);
             continue;
         }
@@ -89,7 +83,7 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
 
         std::vector<std::string> fields = CsvUtils::splitCsvLine(content);
 
-        if (currentSection == Section::Submissions) {
+        if (currentSection == submissionsSection) {
             Submission submission{};
             std::string error;
             if (!DataEntryParsers::parseSubmission(fields, submission, error)) {
@@ -107,7 +101,7 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
             continue;
         }
 
-        if (currentSection == Section::Reviewers) {
+        if (currentSection == reviewersSection) {
             Reviewer reviewer{};
             std::string error;
             if (!DataEntryParsers::parseReviewer(fields, reviewer, error)) {
@@ -125,7 +119,7 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
             continue;
         }
 
-        if (currentSection == Section::Parameters || currentSection == Section::Control) {
+        if (currentSection == parametersSection || currentSection == controlSection) {
             if (fields.size() != 2) {
                 errors.push_back("line " + std::to_string(lineNumber) +
                                  ": key/value entries must have exactly 2 fields");
@@ -133,7 +127,7 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
             }
 
             std::string error;
-            bool ok = currentSection == Section::Parameters
+            bool ok = currentSection == parametersSection
                           ? ParameterConfigParsers::setParameter(parsedData.parameters, fields[0], fields[1],
                                                                 parameterKeys, error)
                           : ParameterConfigParsers::setControl(parsedData.parameters, fields[0], fields[1],
@@ -149,16 +143,16 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
                          ": data found before any valid section header");
     }
 
-    if (!seenSections.count(Section::Submissions)) {
+    if (!seenSections.count(submissionsSection)) {
         errors.push_back("missing #Submissions section");
     }
-    if (!seenSections.count(Section::Reviewers)) {
+    if (!seenSections.count(reviewersSection)) {
         errors.push_back("missing #Reviewers section");
     }
-    if (!seenSections.count(Section::Parameters)) {
+    if (!seenSections.count(parametersSection)) {
         errors.push_back("missing #Parameters section");
     }
-    if (!seenSections.count(Section::Control)) {
+    if (!seenSections.count(controlSection)) {
         errors.push_back("missing #Control section");
     }
     if (parsedData.submissions.empty()) {
