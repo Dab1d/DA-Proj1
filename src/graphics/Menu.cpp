@@ -43,10 +43,10 @@ void Menu::waitForReturnToMenu() {
     int value;
 
     while (true) {
-        cout << "\nPress 1 to return to the menu: ";
+        cout << "\nPress 42 to return to the menu: ";
         if (cin >> value) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if (value == 1) {
+            if (value == 42) {
                 return;
             }
         } else {
@@ -54,6 +54,6 @@ void Menu::waitForReturnToMenu() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
 
-        cout << "Invalid input. Please press 1 to return to the menu.\n";
+        cout << "Invalid input. Please press 42 to return to the menu.\n";
     }
 }
