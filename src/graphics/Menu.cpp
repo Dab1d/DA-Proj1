@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <limits>
+#include <string>
 #include "graphics/Menu.h"
 
 using std::cout;
@@ -18,7 +19,8 @@ void Menu::showMenu() {
     cout << "2. List Submissions"                    << "\n";
     cout << "3. List Reviewers"                      << "\n";
     cout << "4. Check Parameters"                    << "\n";
-    cout << "5. Run Assignment (Max-Flow)"           << "\n";
+    cout << "5. Export Compatibility Graph (.dot)"   << "\n";
+    cout << "6. Run Assignment Algorithm"            << "\n";
     cout << "0. Exit"                                << "\n";
 }
 
@@ -40,20 +42,7 @@ int Menu::getSafeInteger() {
 }
 
 void Menu::waitForReturnToMenu() {
-    int value;
-
-    while (true) {
-        cout << "\nPress 42 to return to the menu: ";
-        if (cin >> value) {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if (value == 42) {
-                return;
-            }
-        } else {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-
-        cout << "Invalid input. Please press 42 to return to the menu.\n";
-    }
+    std::string line;
+    cout << "\nPress Enter to return to the menu...";
+    std::getline(cin, line);
 }

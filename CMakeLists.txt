@@ -8,7 +8,12 @@ include_directories(include)
 add_executable(main
         src/main.cpp
         src/logic/DataActionUtils.cpp
+        src/logic/Control.cpp
         src/logic/DataFileLoader.cpp
+        src/logic/AssignmentRunner.cpp
+        src/logic/ReviewGraphBuilder.cpp
+        src/logic/ReviewGraphExporter.cpp
+        src/logic/ReviewGraphVisualizer.cpp
         src/logic/SubmissionViewer.cpp
         src/logic/ReviewerViewer.cpp
         src/logic/ParameterViewer.cpp
@@ -18,6 +23,6 @@ add_executable(main
         src/io/CsvUtils.cpp
         src/io/DataEntryParsers.cpp
         src/io/DataLoader.cpp
-        src/io/ErrorHandler.cpp
+        src/io/ErrorPrinter.cpp
         src/io/ParameterConfigParsers.cpp
 )

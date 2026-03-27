@@ -1,5 +1,5 @@
-#ifndef INC_1PROJ_ERRORHANDLER_H
-#define INC_1PROJ_ERRORHANDLER_H
+#ifndef INC_1PROJ_ERRORPRINTER_H
+#define INC_1PROJ_ERRORPRINTER_H
 
 #include <string>
 #include <vector>
@@ -7,7 +7,7 @@
 /**
  * @brief Centralizes console output for application errors.
  */
-class ErrorHandler {
+class ErrorPrinter {
 public:
     /**
      * @brief Prints the list of loading/parsing errors.
@@ -17,4 +17,4 @@ public:
     static void printLoadErrors(const std::vector<std::string> &errors);
 };
 
-#endif // INC_1PROJ_ERRORHANDLER_H
+#endif // INC_1PROJ_ERRORPRINTER_H

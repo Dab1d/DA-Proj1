@@ -2,8 +2,10 @@
 
 #include <iostream>
 
+#include "logic/AssignmentRunner.h"
 #include "logic/DataFileLoader.h"
 #include "logic/ParameterViewer.h"
+#include "logic/ReviewGraphVisualizer.h"
 #include "logic/ReviewerViewer.h"
 #include "logic/SubmissionViewer.h"
 #include "graphics/Menu.h"
@@ -32,6 +34,12 @@ void InteractiveMode::run() {
                 break;
             case 4:
                 ParameterViewer::printParameters(data);
+                break;
+            case 5:
+                ReviewGraphVisualizer::exportGraph(data);
+                break;
+            case 6:
+                AssignmentRunner::run(data);
                 break;
             default:
                 cout << "Option not available yet.\n";

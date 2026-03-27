@@ -3,13 +3,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "io/ErrorHandler.h"
+#include "io/ErrorPrinter.h"
 #include "logic/DataActionUtils.h"
 
 using std::cout;
 using std::getline;
 using std::string;
 using std::vector;
+
 void DataFileLoader::loadDataFile(LoadedConferenceData &data) {
     cout << "Enter the CSV file name or path: ";
 
@@ -26,7 +27,7 @@ void DataFileLoader::loadDataFile(LoadedConferenceData &data) {
     const string resolvedFilePath = DataActionUtils::resolveInputFilePath(filePath);
 
     if (!DataLoader::loadFromCsv(resolvedFilePath, loadedData, errors)) {
-        ErrorHandler::printLoadErrors(errors);
+        ErrorPrinter::printLoadErrors(errors);
         return;
     }
 
