@@ -9,17 +9,18 @@ using std::cout;
 using std::cin;
 using std::numeric_limits;
 using std::streamsize;
+
 void Menu::showMenu() {
     std::cout << "\n";
     cout << "======================================" << "\n";
     cout << "      CONFERENCE ASSIGNMENT TOOL      " << "\n";
     cout << "======================================" << "\n";
-    cout << "1. Load Data File (.csv)"               << "\n";
-    cout << "2. List Submissions"                    << "\n";
-    cout << "3. List Reviewers"                      << "\n";
-    cout << "4. Check Parameters"                    << "\n";
-    cout << "5. Run Assignment (Max-Flow)"           << "\n";
-    cout << "0. Exit"                                << "\n";
+    cout << "1. Load Data File (.csv)" << "\n";
+    cout << "2. List Submissions" << "\n";
+    cout << "3. List Reviewers" << "\n";
+    cout << "4. Check Parameters" << "\n";
+    cout << "5. Run Assignment (Max-Flow)" << "\n";
+    cout << "0. Exit" << "\n";
 }
 
 int Menu::getSafeInteger() {
@@ -40,20 +41,13 @@ int Menu::getSafeInteger() {
 }
 
 void Menu::waitForReturnToMenu() {
-    int value;
+    std::string input;
 
     while (true) {
-        cout << "\nPress 42 to return to the menu: ";
-        if (cin >> value) {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if (value == 42) {
-                return;
-            }
-        } else {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
+        cout << "\nPress Enter to return to the menu: ";
+        getline(cin, input);
+        if (input.empty()) return;
 
-        cout << "Invalid input. Please press 42 to return to the menu.\n";
+        cout << "Invalid input. Please press Enter to return to the menu.\n";
     }
 }

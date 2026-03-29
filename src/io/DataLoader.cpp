@@ -8,14 +8,18 @@
 #include "io/DataEntryParsers.h"
 #include "io/ParameterConfigParsers.h"
 
+using std::string;
+using std::vector;
+using std::set;
+using std::unordered_set;
+
 bool LoadedConferenceData::isLoaded() const {
     return !sourceFile.empty();
 }
 
-bool DataLoader::loadFromCsv(const std::string &filePath,
-                             LoadedConferenceData &data,
-                             std::vector<std::string> &errors) {
+bool DataLoader::loadFromCsv(const string &filePath, LoadedConferenceData &data,vector<std::string> &errors) {
     errors.clear();
+
     LoadedConferenceData parsedData;
     parsedData.sourceFile = filePath;
     std::ifstream input(filePath);
@@ -25,24 +29,24 @@ bool DataLoader::loadFromCsv(const std::string &filePath,
     }
 
 
-    const std::string submissionsSection = "#Submissions";
-    const std::string reviewersSection = "#Reviewers";
-    const std::string parametersSection = "#Parameters";
-    const std::string controlSection = "#Control";
+    const string submissionsSection = "#Submissions";
+    const string reviewersSection = "#Reviewers";
+    const string parametersSection = "#Parameters";
+    const string controlSection = "#Control";
 
-    std::string currentSection;
-    std::unordered_set<int> submissionIds;
-    std::unordered_set<int> reviewerIds;
-    std::set<std::string> parameterKeys;
-    std::set<std::string> controlKeys;
-    std::set<std::string> seenSections;
+    string currentSection;
+    unordered_set<int> submissionIds;
+    unordered_set<int> reviewerIds;
+    set<string> parameterKeys;
+    set<string> controlKeys;
+    set<string> seenSections;
 
-    std::string line;
+    string line;
     int lineNumber = 0;
 
     while (std::getline(input, line)) {
-        ++lineNumber;
-        std::string trimmedLine = CsvUtils::trim(line);
+        lineNumber++;
+        string trimmedLine = CsvUtils::trim(line);
 
         if (trimmedLine.empty()) {
             continue;

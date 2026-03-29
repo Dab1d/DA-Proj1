@@ -1,12 +1,12 @@
-#ifndef INC_1PROJ_DATAFILELOADER_H
-#define INC_1PROJ_DATAFILELOADER_H
+#ifndef INC_1PROJ_FILELOADER_H
+#define INC_1PROJ_FILELOADER_H
 
 #include "io/DataLoader.h"
 
 /**
  * @brief Handles dataset loading requests in interactive mode.
  */
-class DataFileLoader {
+class FileLoader {
 public:
     /**
      * @brief Loads a data file by asking the user for its path.
@@ -18,4 +18,4 @@ public:
     static void loadDataFile(LoadedConferenceData &data);
 };
 
-#endif // INC_1PROJ_DATAFILELOADER_H
+#endif // INC_1PROJ_FILELOADER_H

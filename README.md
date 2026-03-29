@@ -34,3 +34,102 @@ Para a entrega de dia 30 de Março, o ficheiro ZIP deve conter:
 - `include/io/` and `src/io/` contain the CSV reader, parser utilities, loader helpers, output helpers, and error handling.
 - `include/logic/` and `src/logic/` contain the higher-level actions triggered by the interface, such as loading data and showing submissions, reviewers, and parameters.
 - `include/structs/` contains the shared project models such as `Submission`, `Reviewer`, `Parameters`, and graph-related structures.
+
+## Workflow do Projeto
+
+```text
+                   +------------------+
+                   |   Build project  |
+                   | CMakeLists.txt   |
+                   +--------+---------+
+                            |
+                            v
+                   +------------------+
+                   |    main.cpp      |
+                   | choose mode      |
+                   +---+----------+---+
+                       |          |
+             no args   |          |  -b input output
+                       |          |
+                       v          v
+        +-------------------+   +-------------------+
+        | InteractiveMode   |   | BatchMode         |
+        | menu loop         |   | one-shot load     |
+        +----+----+----+----+   +---------+---------+
+             |    |    |                    |
+             |    |    |                    |
+             |    |    +--------------------+
+             |    |                         |
+             v    v                         v
+   Load file  View submissions / reviewers / parameters
+             |                             |
+             +-------------+---------------+
+                           |
+                           v
+                 +---------------------+
+                 | DataActionUtils     |
+                 | resolve file path   |
+                 +----------+----------+
+                            |
+                            v
+                 +---------------------+
+                 | DataLoader          |
+                 | parse CSV sections  |
+                 +----------+----------+
+                            |
+          +-----------------+------------------+
+          |                 |                  |
+          v                 v                  v
+   CsvUtils          DataEntryParsers   ParameterConfigParsers
+   trim/split        submissions/revs   parameters/control
+          \                 |                  /
+           \                |                 /
+            +---------------+----------------+
+                            |
+                            v
+                 +---------------------+
+                 | LoadedConferenceData|
+                 | submissions         |
+                 | reviewers           |
+                 | parameters          |
+                 | source file         |
+                 +----------+----------+
+                            |
+                +-----------+-----------+
+                |           |           |
+                v           v           v
+        SubmissionViewer ReviewerViewer ParameterViewer
+```
+
+### Passos Principais
+1. Compilar o executavel com base no `CMakeLists.txt`.
+2. Executar o programa.
+3. O `main.cpp` decide o modo:
+   - sem argumentos: modo interativo;
+   - com `-b input.csv output.csv`: modo batch.
+4. O caminho do ficheiro e resolvido por `DataActionUtils`, que aceita caminho completo, nome do dataset ou apenas o numero do dataset.
+5. O `DataLoader` abre o CSV e valida as seccoes obrigatorias:
+   - `#Submissions`
+   - `#Reviewers`
+   - `#Parameters`
+   - `#Control`
+6. O parsing fica dividido por responsabilidade:
+   - `CsvUtils`: trim, split CSV, quotes, comentarios inline e parsing de inteiros;
+   - `DataEntryParsers`: parsing de submissões e reviewers;
+   - `ParameterConfigParsers`: parsing de parametros e controlos.
+7. Se houver erros, o `ErrorHandler` imprime a lista de problemas encontrados.
+8. Se correr bem, os dados ficam guardados em `LoadedConferenceData`, com:
+   - submissões;
+   - reviewers;
+   - parametros;
+   - ficheiro de origem.
+9. No modo interativo, o utilizador pode:
+   - carregar um ficheiro;
+   - listar submissões;
+   - listar reviewers;
+   - ver parametros.
+10. No modo batch, o programa carrega e valida o dataset e mostra um resumo no terminal.
+
+### Estado Atual
+- A parte de carregamento, validacao e visualizacao de dados esta implementada.
+- A opcao `Run Assignment (Max-Flow)` aparece no menu, mas ainda nao esta implementada na logica atual.
