@@ -4,6 +4,7 @@
 #include "logic/DataActionUtils.h"
 
 using std::cout;
+
 void SubmissionViewer::listSubmissions(const LoadedConferenceData &data) {
     if (!DataActionUtils::ensureDataLoaded(data)) {
         return;
