@@ -46,5 +46,14 @@ public:
             out << r.submissionId << ", " << r.domain << ", "
                 << r.missingReviews << "\n";
     }
+
+    static void writeRiskAnalysis(const std::vector<int>& risky, int K, std::ofstream& out) {
+        out << "#Risk Analysis: " << K << "\n";
+        for (int i = 0; i < (int)risky.size(); i++) {
+            if (i > 0) out << ", ";
+            out << risky[i];
+        }
+        if (!risky.empty()) out << "\n";
+    }
 };
 #endif //ASSIGNMENTWRITER_H
