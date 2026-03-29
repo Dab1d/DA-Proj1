@@ -9,6 +9,8 @@
 #include "algorithms/MaxFlow.h"
 #include "structs/ConferenceData.h"
 #include "io/DataLoader.h"
+#include <unordered_set>
+#include <numeric>
 
 /**
  * @brief Builds the flow network from the loaded conference data.
@@ -26,7 +28,24 @@ public:
      *        (primary domains only).
      * @complexity O(R * S) where R = reviewers, S = submissions
      */
-    static Graph<int> build(const LoadedConferenceData& data) {
+    // NetworkBuilder.h — adiciona estes dois métodos
+
+    /**
+     * @brief Builds the network excluding one reviewer by index.
+     */
+    static Graph<int> build(const LoadedConferenceData&data ){
+      return buildExcludingSet(data,{});
+    }
+    static Graph<int> buildExcluding(const LoadedConferenceData& data, int excludeIdx) {
+        std::vector<int> excluded = {excludeIdx};
+        return buildExcludingSet(data, excluded);
+    }
+
+    /**
+     * @brief Builds the network excluding a set of reviewers by index.
+     */
+    static Graph<int> buildExcludingSet(const LoadedConferenceData& data,
+                                         const std::vector<int>& excludeIndices) {
         int R = data.reviewers.size();
         int S = data.submissions.size();
         int totalNodes = 2 + R + S;
@@ -39,12 +58,13 @@ public:
         int maxRev = data.parameters.maxReviewsPerReviewer;
         int minSub = data.parameters.minReviewsPerSubmission;
 
-        // Source → each reviewer
-        for (int i = 0; i < R; i++)
+        std::unordered_set<int> excluded(excludeIndices.begin(), excludeIndices.end());
+
+        for (int i = 0; i < R; i++) {
+            if (excluded.count(i)) continue; // skip excluded reviewers
+
             MaxFlow::addResidualEdge(g, source, 2 + i, maxRev);
 
-        // Reviewer → Submission (if primary topics match)
-        for (int i = 0; i < R; i++) {
             for (int j = 0; j < S; j++) {
                 if (data.reviewers[i].primaryExpertise ==
                     data.submissions[j].primaryTopic) {
@@ -53,11 +73,12 @@ public:
             }
         }
 
-        // Each submission → Sink
         for (int j = 0; j < S; j++)
             MaxFlow::addResidualEdge(g, 2 + R + j, sink, minSub);
 
         return g;
     }
+
+
 };
 #endif //NETWORKBUILDER_J_H

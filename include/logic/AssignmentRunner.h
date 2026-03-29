@@ -14,6 +14,7 @@
 #include "logic/NetworkBuilder.h"
 #include "algorithms/MaxFlow.h"
 #include "algorithms/AssignmentExtractor.h"
+#include "logic/RiskAnalyzer.h"
 
 class AssignmentRunner {
 public:
@@ -73,6 +74,32 @@ public:
             std::ofstream out(data.parameters.outputFileName, std::ios::app);
             if (out.is_open())
                 AssignmentWriter::writeMissing(missing, out);
+        }
+        // Risk Analysis
+        if (data.parameters.riskAnalysis > 0) {
+            int K = data.parameters.riskAnalysis;
+            std::cout << "\n#Risk Analysis: " << K << "\n";
+
+            if (K == 1) {
+                auto risky = RiskAnalyzer::analyzeK1(data);
+                std::sort(risky.begin(), risky.end());
+
+                // todos na mesma linha separados por vírgula
+                for (int i = 0; i < (int)risky.size(); i++) {
+                    if (i > 0) std::cout << ", ";
+                    std::cout << risky[i];
+                }
+                if (!risky.empty()) std::cout << "\n";
+            } else {
+                auto riskyCombos = RiskAnalyzer::analyzeK(data, K);
+                for (auto& combo : riskyCombos) {
+                    for (int i = 0; i < (int)combo.size(); i++) {
+                        if (i > 0) std::cout << ", ";
+                        std::cout << combo[i];
+                    }
+                    std::cout << "\n";
+                }
+            }
         }
     }
 };
