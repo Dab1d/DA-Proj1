@@ -12,6 +12,14 @@
 
 class AssignmentWriter {
 public:
+    static std::string formatMatch(const Assignment& assignment) {
+        if (assignment.submissionDomain == assignment.reviewerDomain)
+            return std::to_string(assignment.submissionDomain);
+
+        return std::to_string(assignment.submissionDomain) + "/" +
+               std::to_string(assignment.reviewerDomain);
+    }
+
     static void writeAssignments(const std::vector<Assignment>& assignments,
                                  std::ofstream& out)
     {
@@ -24,7 +32,7 @@ public:
         });
         for (auto& a : sorted)
             out << a.submissionId << ", " << a.reviewerId << ", "
-                << a.submissionDomain << "\n";
+                << formatMatch(a) << "\n";
 
         // Reviewer → Submission
         out << "#ReviewerId,SubmissionId,Match\n";
@@ -33,7 +41,7 @@ public:
         });
         for (auto& a : sorted)
             out << a.reviewerId << ", " << a.submissionId << ", "
-                << a.reviewerDomain << "\n";
+                << formatMatch(a) << "\n";
 
         out << "#Total: " << assignments.size() << "\n";
     }
@@ -54,6 +62,19 @@ public:
             out << risky[i];
         }
         if (!risky.empty()) out << "\n";
+    }
+
+    static void writeRiskAnalysisCombinations(const std::vector<std::vector<int>>& riskyCombinations,
+                                              int K,
+                                              std::ofstream& out) {
+        out << "#Risk Analysis: " << K << "\n";
+        for (const auto& combo : riskyCombinations) {
+            for (int i = 0; i < (int)combo.size(); i++) {
+                if (i > 0) out << ", ";
+                out << combo[i];
+            }
+            out << "\n";
+        }
     }
 };
 #endif //ASSIGNMENTWRITER_H

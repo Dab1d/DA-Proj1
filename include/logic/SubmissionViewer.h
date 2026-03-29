@@ -11,7 +11,7 @@ public:
     /**
      * @brief Displays all loaded submissions.
      * @param data Loaded dataset.
-     * @time_complexity O(S), where S is the number of loaded submissions.
+     * @note Time complexity: O(S), where S is the number of loaded submissions.
      */
     static void listSubmissions(const LoadedConferenceData &data);
 };

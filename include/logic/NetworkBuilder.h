@@ -11,6 +11,8 @@
 #include "io/DataLoader.h"
 #include <unordered_set>
 #include <numeric>
+#include <utility>
+#include <vector>
 
 /**
  * @brief Builds the flow network from the loaded conference data.
@@ -66,10 +68,10 @@ public:
             MaxFlow::addResidualEdge(g, source, 2 + i, maxRev);
 
             for (int j = 0; j < S; j++) {
-                if (data.reviewers[i].primaryExpertise ==
-                    data.submissions[j].primaryTopic) {
+                if (hasValidMatch(data.submissions[j], data.reviewers[i],
+                                  data.parameters.generateAssignments)) {
                     MaxFlow::addResidualEdge(g, 2 + i, 2 + R + j, 1.0);
-                    }
+                }
             }
         }
 
@@ -79,6 +81,35 @@ public:
         return g;
     }
 
+private:
+    static std::vector<int> submissionDomains(const Submission& submission, int mode) {
+        std::vector<int> domains;
+        if (submission.primaryTopic != -1) domains.push_back(submission.primaryTopic);
+        if (mode >= 2 && submission.secondaryTopic != -1) domains.push_back(submission.secondaryTopic);
+        return domains;
+    }
 
+    static std::vector<int> reviewerDomains(const Reviewer& reviewer, int mode) {
+        std::vector<int> domains;
+        if (reviewer.primaryExpertise != -1) domains.push_back(reviewer.primaryExpertise);
+        if (mode >= 3 && reviewer.secondaryExpertise != -1) domains.push_back(reviewer.secondaryExpertise);
+        return domains;
+    }
+
+    static bool hasValidMatch(const Submission& submission,
+                              const Reviewer& reviewer,
+                              int mode) {
+        if (mode <= 0) mode = 1;
+
+        const std::vector<int> submissionTopics = submissionDomains(submission, mode);
+        const std::vector<int> reviewerTopics = reviewerDomains(reviewer, mode);
+
+        for (int submissionTopic : submissionTopics)
+            for (int reviewerTopic : reviewerTopics)
+                if (submissionTopic == reviewerTopic)
+                    return true;
+
+        return false;
+    }
 };
 #endif //NETWORKBUILDER_J_H

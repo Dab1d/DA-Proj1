@@ -11,7 +11,7 @@ public:
     /**
      * @brief Displays all loaded reviewers.
      * @param data Loaded dataset.
-     * @time_complexity O(R), where R is the number of loaded reviewers.
+     * @note Time complexity: O(R), where R is the number of loaded reviewers.
      */
     static void listReviewers(const LoadedConferenceData &data);
 };

@@ -8,6 +8,10 @@
 #include "structs/Graph.h"
 //#include "model/LoadedConferenceData.h"
 #include "structs/ConferenceData.h" // Assignment, RiskEntry
+#include "structs/Reviewer.h"
+#include "structs/Submission.h"
+#include <utility>
+#include <vector>
 
 class AssignmentExtractor {
 public:
@@ -32,11 +36,14 @@ public:
                 int dst = e->getDest()->getInfo();
                 if (dst >= 2 + R && e->getFlow() > 0) {
                     int submissionIdx = dst - (2 + R);
+                    const auto match = resolveMatchDomains(data.submissions[submissionIdx],
+                                                           data.reviewers[i],
+                                                           data.parameters.generateAssignments);
                     Assignment a;
                     a.reviewerId      = data.reviewers[i].id;
                     a.submissionId    = data.submissions[submissionIdx].id;
-                    a.reviewerDomain  = data.reviewers[i].primaryExpertise;
-                    a.submissionDomain = data.submissions[submissionIdx].primaryTopic;
+                    a.reviewerDomain  = match.second;
+                    a.submissionDomain = match.first;
                     results.push_back(a);
                 }
             }
@@ -72,12 +79,40 @@ public:
             if (shortage > 0) {
                 RiskEntry r;
                 r.submissionId  = data.submissions[j].id;
-                r.domain        = data.submissions[j].primaryTopic;
+                r.domain        = preferredSubmissionDomain(data.submissions[j],
+                                                           data.parameters.generateAssignments);
                 r.missingReviews = shortage;
                 missing.push_back(r);
             }
         }
         return missing;
+    }
+
+private:
+    static int preferredSubmissionDomain(const Submission& submission, int mode) {
+        if (submission.primaryTopic != -1) return submission.primaryTopic;
+        if (mode >= 2 && submission.secondaryTopic != -1) return submission.secondaryTopic;
+        return -1;
+    }
+
+    static std::pair<int, int> resolveMatchDomains(const Submission& submission,
+                                                   const Reviewer& reviewer,
+                                                   int mode) {
+        std::vector<int> submissionDomains;
+        std::vector<int> reviewerDomains;
+
+        if (submission.primaryTopic != -1) submissionDomains.push_back(submission.primaryTopic);
+        if (mode >= 2 && submission.secondaryTopic != -1) submissionDomains.push_back(submission.secondaryTopic);
+
+        if (reviewer.primaryExpertise != -1) reviewerDomains.push_back(reviewer.primaryExpertise);
+        if (mode >= 3 && reviewer.secondaryExpertise != -1) reviewerDomains.push_back(reviewer.secondaryExpertise);
+
+        for (int submissionDomain : submissionDomains)
+            for (int reviewerDomain : reviewerDomains)
+                if (submissionDomain == reviewerDomain)
+                    return {submissionDomain, reviewerDomain};
+
+        return {preferredSubmissionDomain(submission, mode), reviewer.primaryExpertise};
     }
 };
 #endif //ASSIGNMENTEXTRACTOR_H

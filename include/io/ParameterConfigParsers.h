@@ -17,8 +17,8 @@ namespace ParameterConfigParsers {
      * @param seenKeys Set of parameter keys already processed.
      * @param error Human-readable error message on failure.
      * @return `true` if the parameter was accepted; `false` otherwise.
-     * @time_complexity O(log k + |key| + |value|), where k is the number of
-     * previously seen parameter keys.
+     * @note Time complexity: O(log k + |key| + |value|), where k is the number
+     * of previously seen parameter keys.
      */
     bool setParameter(Parameters &parameters,
                       const std::string &key,
@@ -34,8 +34,8 @@ namespace ParameterConfigParsers {
      * @param seenKeys Set of control keys already processed.
      * @param error Human-readable error message on failure.
      * @return `true` if the control entry was accepted; `false` otherwise.
-     * @time_complexity O(log k + |key| + |value|), where k is the number of
-     * previously seen control keys.
+     * @note Time complexity: O(log k + |key| + |value|), where k is the number
+     * of previously seen control keys.
      */
     bool setControl(Parameters &parameters,
                     const std::string &key,

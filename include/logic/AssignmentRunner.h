@@ -33,10 +33,11 @@ public:
         std::cout << "\nMax flow computed: " << (int)flow
                   << " / " << required << " required\n";
 
-        // Always extract assignments if any flow exists
-        if (flow > 0 && data.parameters.generateAssignments > 0) {
-            auto assignments = AssignmentExtractor::extract(g, data);
+        std::vector<Assignment> assignments;
+        if (flow > 0)
+            assignments = AssignmentExtractor::extract(g, data);
 
+        if (data.parameters.generateAssignments > 0 && !assignments.empty()) {
             auto sorted = assignments;
             std::cout << "\n#SubmissionId,ReviewerId,Match\n";
             std::sort(sorted.begin(), sorted.end(), [](const Assignment& a, const Assignment& b){
@@ -44,7 +45,7 @@ public:
             });
             for (auto& a : sorted)
                 std::cout << a.submissionId << ", " << a.reviewerId
-                          << ", " << a.submissionDomain << "\n";
+                          << ", " << AssignmentWriter::formatMatch(a) << "\n";
 
             std::cout << "\n#ReviewerId,SubmissionId,Match\n";
             std::sort(sorted.begin(), sorted.end(), [](const Assignment& a, const Assignment& b){
@@ -52,7 +53,7 @@ public:
             });
             for (auto& a : sorted)
                 std::cout << a.reviewerId << ", " << a.submissionId
-                          << ", " << a.reviewerDomain << "\n";
+                          << ", " << AssignmentWriter::formatMatch(a) << "\n";
 
             std::cout << "#Total: " << assignments.size() << "\n";
 
@@ -79,6 +80,7 @@ public:
         if (data.parameters.riskAnalysis > 0) {
             int K = data.parameters.riskAnalysis;
             std::cout << "\n#Risk Analysis: " << K << "\n";
+            std::ofstream out(data.parameters.outputFileName, std::ios::app);
 
             if (K == 1) {
                 auto risky = RiskAnalyzer::analyzeK1(data);
@@ -90,6 +92,8 @@ public:
                     std::cout << risky[i];
                 }
                 if (!risky.empty()) std::cout << "\n";
+                if (out.is_open())
+                    AssignmentWriter::writeRiskAnalysis(risky, K, out);
             } else {
                 auto riskyCombos = RiskAnalyzer::analyzeK(data, K);
                 for (auto& combo : riskyCombos) {
@@ -99,6 +103,8 @@ public:
                     }
                     std::cout << "\n";
                 }
+                if (out.is_open())
+                    AssignmentWriter::writeRiskAnalysisCombinations(riskyCombos, K, out);
             }
         }
     }

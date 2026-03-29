@@ -19,8 +19,8 @@
  * @param reviewers Loaded reviewers.
  * @param params Assignment and control parameters.
  * @return The generated reviewer-submission assignments.
- * @time_complexity O(G), where G is the complexity of the concrete assignment
- * algorithm chosen by the implementation.
+ * @note Time complexity: O(G), where G is the complexity of the concrete
+ * assignment algorithm chosen by the implementation.
  */
 std::vector<Assignment> generateAssignments(
     const std::vector<Submission> &submissions,
@@ -34,8 +34,8 @@ std::vector<Assignment> generateAssignments(
  * @param assignments Generated assignments.
  * @param params Assignment and control parameters.
  * @return One risk entry per submission that is still missing reviews.
- * @time_complexity O(S + A), where S is the number of submissions and A is the
- * number of assignments analyzed.
+ * @note Time complexity: O(S + A), where S is the number of submissions and A
+ * is the number of assignments analyzed.
  */
 std::vector<RiskEntry> analyzeRisk(
     const std::vector<Submission> &submissions,
@@ -55,8 +55,8 @@ std::vector<RiskEntry> analyzeRisk(
  * @param assignments Existing assignments.
  * @param params Assignment and control parameters.
  * @return The identifiers of risky reviewers.
- * @time_complexity O(R * G), where R is the number of reviewers and G is the
- * complexity of one reassignment attempt in the chosen implementation.
+ * @note Time complexity: O(R * G), where R is the number of reviewers and G is
+ * the complexity of one reassignment attempt in the chosen implementation.
  */
 std::vector<int> analyzeReviewerRisk(
     const std::vector<Submission> &submissions,
@@ -71,8 +71,8 @@ std::vector<int> analyzeReviewerRisk(
  * @param risks Submissions still missing reviews.
  * @param riskyReviewers Reviewers classified as risky.
  * @param params Assignment and output parameters.
- * @time_complexity O(A + M + K), where A is the number of assignments, M is
- * the number of missing-review entries, and K is the number of risky
+ * @note Time complexity: O(A + M + K), where A is the number of assignments,
+ * M is the number of missing-review entries, and K is the number of risky
  * reviewers.
  */
 void writeOutput(

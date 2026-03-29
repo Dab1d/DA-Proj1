@@ -12,7 +12,7 @@ namespace CsvUtils {
      * @brief Removes leading and trailing whitespace from a string.
      * @param value String to normalize.
      * @return A trimmed copy of @p value.
-     * @time_complexity O(n), where n is the length of @p value.
+     * @note Time complexity: O(n), where n is the length of @p value.
      */
     std::string trim(const std::string &value);
 
@@ -21,7 +21,7 @@ namespace CsvUtils {
      * @param value Raw CSV field.
      * @return The unquoted field when surrounding quotes exist; otherwise the
      * original value.
-     * @time_complexity O(n), where n is the length of @p value.
+     * @note Time complexity: O(n), where n is the length of @p value.
      */
     std::string stripQuotes(const std::string &value);
 
@@ -29,7 +29,7 @@ namespace CsvUtils {
      * @brief Splits a CSV line into fields while respecting quoted segments.
      * @param line Input line to split.
      * @return The extracted CSV fields.
-     * @time_complexity O(n), where n is the length of @p line.
+     * @note Time complexity: O(n), where n is the length of @p line.
      */
     std::vector<std::string> splitCsvLine(const std::string &line);
 
@@ -38,7 +38,7 @@ namespace CsvUtils {
      * @param value Source text.
      * @param result Parsed integer on success.
      * @return `true` when the value is a valid integer; `false` otherwise.
-     * @time_complexity O(n), where n is the length of @p value.
+     * @note Time complexity: O(n), where n is the length of @p value.
      */
     bool tryParseInteger(const std::string &value, int &result);
 
@@ -48,7 +48,7 @@ namespace CsvUtils {
      * @param result Parsed integer on success.
      * @return `true` when the field is empty or contains a valid integer;
      * `false` otherwise.
-     * @time_complexity O(n), where n is the length of @p value.
+     * @note Time complexity: O(n), where n is the length of @p value.
      */
     bool parseOptionalInteger(const std::string &value, int &result);
 
@@ -56,7 +56,7 @@ namespace CsvUtils {
      * @brief Removes an inline comment from a CSV line.
      * @param line Raw input line.
      * @return The line content without the trailing inline comment.
-     * @time_complexity O(n), where n is the length of @p line.
+     * @note Time complexity: O(n), where n is the length of @p line.
      */
     std::string removeInlineComment(const std::string &line);
 }

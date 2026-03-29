@@ -12,6 +12,7 @@
 #include "logic/NetworkBuilder.h"
 #include "algorithms/MaxFlow.h"
 #include "algorithms/AssignmentExtractor.h"
+#include "logic/RiskAnalyzer.h"
 #include "structs/ConferenceData.h"
 
 using std::cout;
@@ -40,6 +41,10 @@ void BatchMode::run(const string& inputFile, const string& outputFile) {
     // 4. Check if assignment is feasible
     int S = data.submissions.size();
     int required = S * data.parameters.minReviewsPerSubmission;
+    std::vector<Assignment> assignments;
+    if (flow > 0) {
+        assignments = AssignmentExtractor::extract(g, data);
+    }
 
     std::ofstream out(outputFile);
     if (!out.is_open()) {
@@ -47,21 +52,24 @@ void BatchMode::run(const string& inputFile, const string& outputFile) {
         return;
     }
 
-    if (data.parameters.generateAssignments == 0) {
-        // Run but don't report
-        cout << "Assignment computed but not reported (GenerateAssignments=0).\n";
-        return;
-    }
-
-    if ((int)flow < required) {
+    if (data.parameters.generateAssignments > 0 && (int)flow >= required) {
+        AssignmentWriter::writeAssignments(assignments, out);
+        cout << "Assignment successful. Output written to: " << outputFile << "\n";
+    } else if ((int)flow < required) {
         // 5a. Infeasible — report missing reviews
         auto missing = AssignmentExtractor::getMissing(g, data);
         AssignmentWriter::writeMissing(missing, out);
         cout << "Assignment not fully feasible. Missing reviews written to: " << outputFile << "\n";
     } else {
-        // 5b. Feasible — extract and write assignments
-        auto assignments = AssignmentExtractor::extract(g, data);
-        AssignmentWriter::writeAssignments(assignments, out);
-        cout << "Assignment successful. Output written to: " << outputFile << "\n";
+        cout << "Assignment computed but not reported (GenerateAssignments=0).\n";
+    }
+
+    if (data.parameters.riskAnalysis == 1) {
+        auto risky = RiskAnalyzer::analyzeK1(data);
+        std::sort(risky.begin(), risky.end());
+        AssignmentWriter::writeRiskAnalysis(risky, 1, out);
+    } else if (data.parameters.riskAnalysis > 1) {
+        auto riskyCombos = RiskAnalyzer::analyzeK(data, data.parameters.riskAnalysis);
+        AssignmentWriter::writeRiskAnalysisCombinations(riskyCombos, data.parameters.riskAnalysis, out);
     }
 }
