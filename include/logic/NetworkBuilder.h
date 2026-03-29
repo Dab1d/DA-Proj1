@@ -24,18 +24,23 @@
 class NetworkBuilder {
 public:
     /**
-     * @brief Constructs the flow network for GenerateAssignments = 1
-     *        (primary domains only).
+     * @brief Constructs the flow network using all reviewers.
+     * @param data Loaded conference instance.
+     * @return Flow network with source, sink, reviewer nodes, and submission
+     * nodes connected according to primary-domain compatibility.
      * @complexity O(R * S) where R = reviewers, S = submissions
-     */
-    // NetworkBuilder.h — adiciona estes dois métodos
-
-    /**
-     * @brief Builds the network excluding one reviewer by index.
      */
     static Graph<int> build(const LoadedConferenceData&data ){
       return buildExcludingSet(data,{});
     }
+
+    /**
+     * @brief Builds the network excluding one reviewer by index.
+     * @param data Loaded conference instance.
+     * @param excludeIdx Reviewer index in `data.reviewers` to exclude.
+     * @return Flow network without the selected reviewer node capacity.
+     * @complexity O(R * S) where R = reviewers, S = submissions
+     */
     static Graph<int> buildExcluding(const LoadedConferenceData& data, int excludeIdx) {
         std::vector<int> excluded = {excludeIdx};
         return buildExcludingSet(data, excluded);
@@ -43,6 +48,10 @@ public:
 
     /**
      * @brief Builds the network excluding a set of reviewers by index.
+     * @param data Loaded conference instance.
+     * @param excludeIndices Reviewer indices in `data.reviewers` to exclude.
+     * @return Flow network without the selected reviewers.
+     * @complexity O(R * S) where R = reviewers, S = submissions
      */
     static Graph<int> buildExcludingSet(const LoadedConferenceData& data,
                                          const std::vector<int>& excludeIndices) {

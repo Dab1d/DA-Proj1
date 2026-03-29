@@ -21,32 +21,64 @@ class Edge;
 template <class T>
 class Vertex {
 public:
+    /** @brief Creates a vertex storing the given value. */
     Vertex(T in);
+    /** @brief Compares vertices by distance for priority-queue ordering. */
     bool operator<(Vertex<T> & vertex) const; // // required by MutablePriorityQueue
 
+    /** @brief Returns the value stored in the vertex. */
     T getInfo() const;
+    /** @brief Returns the list of outgoing edges. */
     std::vector<Edge<T> *> getAdj() const;
+    /** @brief Returns whether the vertex was marked as visited. */
     bool isVisited() const;
+    /** @brief Returns whether the vertex is currently being processed. */
     bool isProcessing() const;
+    /** @brief Returns the stored indegree value. */
     unsigned int getIndegree() const;
+    /** @brief Returns the current distance label. */
     double getDist() const;
+    /** @brief Returns the path edge used to reach this vertex. */
     Edge<T> *getPath() const;
+    /** @brief Returns the list of incoming edges. */
     std::vector<Edge<T> *> getIncoming() const;
 
+    /** @brief Updates the value stored in the vertex. */
     void setInfo(T info);
+    /** @brief Updates the visited flag. */
     void setVisited(bool visited);
+    /** @brief Updates the processing flag. */
     void setProcessing(bool processing);
 
+    /** @brief Returns the Tarjan low-link value. */
     int getLow() const;
+    /** @brief Updates the Tarjan low-link value. */
     void setLow(int value);
+    /** @brief Returns the Tarjan discovery number. */
     int getNum() const;
+    /** @brief Updates the Tarjan discovery number. */
     void setNum(int value);
 
+    /** @brief Updates the indegree value. */
     void setIndegree(unsigned int indegree);
+    /** @brief Updates the distance label. */
     void setDist(double dist);
+    /** @brief Updates the predecessor path edge. */
     void setPath(Edge<T> *path);
+    /**
+     * @brief Adds one outgoing edge to the destination vertex.
+     * @param dest Destination vertex.
+     * @param w Edge weight or capacity.
+     * @return Pointer to the newly created edge.
+     */
     Edge<T> * addEdge(Vertex<T> *dest, double w);
+    /**
+     * @brief Removes all outgoing edges to a destination value.
+     * @param in Destination vertex value.
+     * @return `true` if at least one edge was removed.
+     */
     bool removeEdge(T in);
+    /** @brief Removes all outgoing edges from the vertex. */
     void removeOutgoingEdges();
 
     friend class MutablePriorityQueue<Vertex>;
@@ -74,17 +106,27 @@ protected:
 template <class T>
 class Edge {
 public:
+    /** @brief Creates an edge from origin to destination with weight `w`. */
     Edge(Vertex<T> *orig, Vertex<T> *dest, double w);
 
+    /** @brief Returns the destination vertex. */
     Vertex<T> * getDest() const;
+    /** @brief Returns the edge weight or capacity. */
     double getWeight() const;
+    /** @brief Returns whether the edge is currently selected. */
     bool isSelected() const;
+    /** @brief Returns the origin vertex. */
     Vertex<T> * getOrig() const;
+    /** @brief Returns the reverse edge, when one exists. */
     Edge<T> *getReverse() const;
+    /** @brief Returns the current flow value on the edge. */
     double getFlow() const;
 
+    /** @brief Updates the selected flag. */
     void setSelected(bool selected);
+    /** @brief Sets the reverse edge pointer. */
     void setReverse(Edge<T> *reverse);
+    /** @brief Updates the current flow value. */
     void setFlow(double flow);
 protected:
     Vertex<T> * dest; // destination vertex
@@ -105,28 +147,54 @@ protected:
 template <class T>
 class Graph {
 public:
+    /** @brief Destroys the graph and auxiliary matrices. */
     ~Graph();
-    /*
-    * Auxiliary function to find a vertex with a given the content.
-    */
+    /**
+     * @brief Finds a vertex by its stored value.
+     * @param in Vertex value to search for.
+     * @return Matching vertex pointer, or `nullptr` if absent.
+     */
     Vertex<T> *findVertex(const T &in) const;
-    /*
-     *  Adds a vertex with a given content or info (in) to a graph (this).
-     *  Returns true if successful, and false if a vertex with that content already exists.
+    /**
+     * @brief Adds a new vertex to the graph.
+     * @param in Vertex value to insert.
+     * @return `true` if inserted, `false` if that value already exists.
      */
     bool addVertex(const T &in);
+    /**
+     * @brief Removes a vertex and all incident edges.
+     * @param in Vertex value to remove.
+     * @return `true` if the vertex existed and was removed.
+     */
     bool removeVertex(const T &in);
 
-    /*
-     * Adds an edge to a graph (this), given the contents of the source and
-     * destination vertices and the edge weight (w).
-     * Returns true if successful, and false if the source or destination vertex does not exist.
+    /**
+     * @brief Adds a directed edge between two existing vertices.
+     * @param sourc Source vertex value.
+     * @param dest Destination vertex value.
+     * @param w Edge weight or capacity.
+     * @return `true` if both vertices exist and the edge was added.
      */
     bool addEdge(const T &sourc, const T &dest, double w);
+    /**
+     * @brief Removes a directed edge between two vertices.
+     * @param source Source vertex value.
+     * @param dest Destination vertex value.
+     * @return `true` if the edge existed and was removed.
+     */
     bool removeEdge(const T &source, const T &dest);
+    /**
+     * @brief Adds two symmetric directed edges between the given vertices.
+     * @param sourc First vertex value.
+     * @param dest Second vertex value.
+     * @param w Edge weight or capacity for both directions.
+     * @return `true` if both vertices exist and the edges were added.
+     */
     bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
 
+    /** @brief Returns the number of vertices in the graph. */
     int getNumVertex() const;
+    /** @brief Returns the internal vertex container. */
     std::vector<Vertex<T> *> getVertexSet() const;
 
 protected:
@@ -135,8 +203,10 @@ protected:
     double ** distMatrix = nullptr;   // dist matrix for Floyd-Warshall
     int **pathMatrix = nullptr;   // path matrix for Floyd-Warshall
 
-    /*
-     * Finds the index of the vertex with a given content.
+    /**
+     * @brief Finds the index of a vertex by value.
+     * @param in Vertex value to search for.
+     * @return Zero-based index, or `-1` if absent.
      */
     int findVertexIdx(const T &in) const;
 };
@@ -149,10 +219,6 @@ void deleteMatrix(double **m, int n);
 
 template <class T>
 Vertex<T>::Vertex(T in): info(in) {}
-/*
- * Auxiliary function to add an outgoing edge to a vertex (this),
- * with a given destination vertex (d) and edge weight (w).
- */
 template <class T>
 Edge<T> * Vertex<T>::addEdge(Vertex<T> *d, double w) {
     auto newEdge = new Edge<T>(this, d, w);
@@ -161,11 +227,6 @@ Edge<T> * Vertex<T>::addEdge(Vertex<T> *d, double w) {
     return newEdge;
 }
 
-/*
- * Auxiliary function to remove an outgoing edge (with a given destination (d))
- * from a vertex (this).
- * Returns true if successful, and false if such edge does not exist.
- */
 template <class T>
 bool Vertex<T>::removeEdge(T in) {
     bool removedEdge = false;
@@ -185,9 +246,6 @@ bool Vertex<T>::removeEdge(T in) {
     return removedEdge;
 }
 
-/*
- * Auxiliary function to remove an outgoing edge of a vertex.
- */
 template <class T>
 void Vertex<T>::removeOutgoingEdges() {
     auto it = adj.begin();
@@ -371,9 +429,6 @@ std::vector<Vertex<T> *> Graph<T>::getVertexSet() const {
     return vertexSet;
 }
 
-/*
- * Auxiliary function to find a vertex with a given content.
- */
 template <class T>
 Vertex<T> * Graph<T>::findVertex(const T &in) const {
     for (auto v : vertexSet)
@@ -382,9 +437,6 @@ Vertex<T> * Graph<T>::findVertex(const T &in) const {
     return nullptr;
 }
 
-/*
- * Finds the index of the vertex with a given content.
- */
 template <class T>
 int Graph<T>::findVertexIdx(const T &in) const {
     for (unsigned i = 0; i < vertexSet.size(); i++)
@@ -392,10 +444,6 @@ int Graph<T>::findVertexIdx(const T &in) const {
             return i;
     return -1;
 }
-/*
- *  Adds a vertex with a given content or info (in) to a graph (this).
- *  Returns true if successful, and false if a vertex with that content already exists.
- */
 template <class T>
 bool Graph<T>::addVertex(const T &in) {
     if (findVertex(in) != nullptr)
@@ -404,11 +452,6 @@ bool Graph<T>::addVertex(const T &in) {
     return true;
 }
 
-/*
- *  Removes a vertex with a given content (in) from a graph (this), and
- *  all outgoing and incoming edges.
- *  Returns true if successful, and false if such vertex does not exist.
- */
 template <class T>
 bool Graph<T>::removeVertex(const T &in) {
     for (auto it = vertexSet.begin(); it != vertexSet.end(); it++) {
@@ -426,11 +469,6 @@ bool Graph<T>::removeVertex(const T &in) {
     return false;
 }
 
-/*
- * Adds an edge to a graph (this), given the contents of the source and
- * destination vertices and the edge weight (w).
- * Returns true if successful, and false if the source or destination vertex does not exist.
- */
 template <class T>
 bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
     auto v1 = findVertex(sourc);
@@ -441,11 +479,6 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
     return true;
 }
 
-/*
- * Removes an edge from a graph (this).
- * The edge is identified by the source (sourc) and destination (dest) contents.
- * Returns true if successful, and false if such edge does not exist.
- */
 template <class T>
 bool Graph<T>::removeEdge(const T &sourc, const T &dest) {
     Vertex<T> * srcVertex = findVertex(sourc);

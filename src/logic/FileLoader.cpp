@@ -1,8 +1,8 @@
-#include "logic/DataFileLoader.h"
-
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "logic/FileLoader.h"
 #include "io/ErrorHandler.h"
 #include "logic/DataActionUtils.h"
 
@@ -10,7 +10,8 @@ using std::cout;
 using std::getline;
 using std::string;
 using std::vector;
-void DataFileLoader::loadDataFile(LoadedConferenceData &data) {
+
+void FileLoader::loadDataFile(LoadedConferenceData &data) {
     cout << "Enter the CSV file name or path: ";
 
     string filePath;

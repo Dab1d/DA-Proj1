@@ -8,7 +8,7 @@ include_directories(include)
 add_executable(main
         src/main.cpp
         src/logic/DataActionUtils.cpp
-        src/logic/DataFileLoader.cpp
+        src/logic/FileLoader.cpp
         src/logic/SubmissionViewer.cpp
         src/logic/ReviewerViewer.cpp
         src/logic/ParameterViewer.cpp

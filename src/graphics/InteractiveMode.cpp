@@ -3,7 +3,7 @@
 #include <iostream>
 #include <structs/ConferenceData.h>
 
-#include "logic/DataFileLoader.h"
+#include "logic/FileLoader.h"
 #include "logic/ParameterViewer.h"
 #include "logic/ReviewerViewer.h"
 #include "logic/SubmissionViewer.h"
@@ -24,7 +24,7 @@ void InteractiveMode::run() {
 
         switch (choice) {
             case 1:
-                DataFileLoader::loadDataFile(data);
+                FileLoader::loadDataFile(data);
                 break;
             case 2:
                 SubmissionViewer::listSubmissions(data);
