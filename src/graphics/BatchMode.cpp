@@ -12,7 +12,6 @@
 #include "logic/NetworkBuilder.h"
 #include "algorithms/MaxFlow.h"
 #include "algorithms/AssignmentExtractor.h"
-#include "structs/ConferenceData.h"
 
 using std::cout;
 using std::string;

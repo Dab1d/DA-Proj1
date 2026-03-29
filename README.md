@@ -38,97 +38,83 @@ Para a entrega de dia 30 de Março, o ficheiro ZIP deve conter:
 ## Workflow do Projeto
 
 ```text
-                   +------------------+
-                   |   Build project  |
-                   | CMakeLists.txt   |
-                   +--------+---------+
-                            |
-                            v
-                   +------------------+
-                   |    main.cpp      |
-                   | choose mode      |
-                   +---+----------+---+
-                       |          |
-             no args   |          |  -b input output
-                       |          |
-                       v          v
-        +-------------------+   +-------------------+
-        | InteractiveMode   |   | BatchMode         |
-        | menu loop         |   | one-shot load     |
-        +----+----+----+----+   +---------+---------+
-             |    |    |                    |
-             |    |    |                    |
-             |    |    +--------------------+
-             |    |                         |
-             v    v                         v
-   Load file  View submissions / reviewers / parameters
-             |                             |
-             +-------------+---------------+
-                           |
-                           v
-                 +---------------------+
-                 | DataActionUtils     |
-                 | resolve file path   |
-                 +----------+----------+
-                            |
-                            v
-                 +---------------------+
-                 | DataLoader          |
-                 | parse CSV sections  |
-                 +----------+----------+
-                            |
-          +-----------------+------------------+
-          |                 |                  |
-          v                 v                  v
-   CsvUtils          DataEntryParsers   ParameterConfigParsers
-   trim/split        submissions/revs   parameters/control
-          \                 |                  /
-           \                |                 /
-            +---------------+----------------+
-                            |
-                            v
-                 +---------------------+
-                 | LoadedConferenceData|
-                 | submissions         |
-                 | reviewers           |
-                 | parameters          |
-                 | source file         |
-                 +----------+----------+
-                            |
-                +-----------+-----------+
-                |           |           |
-                v           v           v
-        SubmissionViewer ReviewerViewer ParameterViewer
+Start
+  |
+  v
+Build project
+  |
+  v
+Run executable
+  |
+  +--> `./main`
+  |      |
+  |      v
+  |   Interactive mode
+  |      |
+  |      +--> Load CSV file
+  |      +--> List submissions
+  |      +--> List reviewers
+  |      +--> View parameters
+  |
+  +--> `./main -b input.csv output.csv`
+         |
+         v
+      Batch mode
+         |
+         +--> Load CSV file
+         +--> Validate dataset
+         +--> Show summary in terminal
 ```
 
 ### Passos Principais
-1. Compilar o executavel com base no `CMakeLists.txt`.
-2. Executar o programa.
-3. O `main.cpp` decide o modo:
+1. Compilar o projeto com o `CMakeLists.txt`.
+2. Executar o programa em modo interativo ou batch.
+3. O `main.cpp` escolhe o modo de execucao:
    - sem argumentos: modo interativo;
    - com `-b input.csv output.csv`: modo batch.
-4. O caminho do ficheiro e resolvido por `DataActionUtils`, que aceita caminho completo, nome do dataset ou apenas o numero do dataset.
-5. O `DataLoader` abre o CSV e valida as seccoes obrigatorias:
+4. O caminho do ficheiro e tratado por `DataActionUtils`.
+5. O `DataLoader` abre o CSV e verifica se existem as seccoes:
    - `#Submissions`
    - `#Reviewers`
    - `#Parameters`
    - `#Control`
-6. O parsing fica dividido por responsabilidade:
-   - `CsvUtils`: trim, split CSV, quotes, comentarios inline e parsing de inteiros;
-   - `DataEntryParsers`: parsing de submissões e reviewers;
-   - `ParameterConfigParsers`: parsing de parametros e controlos.
-7. Se houver erros, o `ErrorHandler` imprime a lista de problemas encontrados.
-8. Se correr bem, os dados ficam guardados em `LoadedConferenceData`, com:
-   - submissões;
-   - reviewers;
-   - parametros;
-   - ficheiro de origem.
-9. No modo interativo, o utilizador pode:
-   - carregar um ficheiro;
-   - listar submissões;
-   - listar reviewers;
-   - ver parametros.
-10. No modo batch, o programa carrega e valida o dataset e mostra um resumo no terminal.
+6. O parsing e dividido entre:
+   - `CsvUtils` para utilitarios de CSV;
+   - `DataEntryParsers` para submissões e reviewers;
+   - `ParameterConfigParsers` para parametros e controlos.
+7. Se houver erros, o `ErrorHandler` mostra as mensagens no terminal.
+8. Se nao houver erros, os dados ficam guardados em `LoadedConferenceData`.
+9. No modo interativo, o utilizador consulta os dados atraves do menu.
+10. No modo batch, o programa apenas valida e apresenta um resumo da carga.
+
+### Fluxo Interno do Codigo
+
+```text
+User input
+  |
+  v
+main.cpp
+  |
+  +--> InteractiveMode / BatchMode
+           |
+           v
+    DataActionUtils
+    resolveInputFilePath()
+           |
+           v
+       DataLoader
+           |
+           +--> CsvUtils
+           +--> DataEntryParsers
+           +--> ParameterConfigParsers
+           |
+           v
+    LoadedConferenceData
+           |
+           +--> SubmissionViewer
+           +--> ReviewerViewer
+           +--> ParameterViewer
+```
 
 ### Estado Atual
 - A parte de carregamento, validacao e visualizacao de dados esta implementada.
