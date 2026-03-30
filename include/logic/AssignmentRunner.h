@@ -80,7 +80,7 @@ public:
         if (data.parameters.riskAnalysis > 0) {
             int K = data.parameters.riskAnalysis;
             std::cout << "\n#Risk Analysis: " << K << "\n";
-            std::ofstream out(data.parameters.outputFileName, std::ios::app);
+            std::ofstream out(data.parameters.outputFileName, std::ios::app| std::ios::out);
 
             if (K == 1) {
                 auto risky = RiskAnalyzer::analyzeK1(data);
