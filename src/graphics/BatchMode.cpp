@@ -68,8 +68,5 @@ void BatchMode::run(const string& inputFile, const string& outputFile) {
         auto risky = RiskAnalyzer::analyzeK1(data);
         std::sort(risky.begin(), risky.end());
         AssignmentWriter::writeRiskAnalysis(risky, 1, out);
-    } else if (data.parameters.riskAnalysis > 1) {
-        auto riskyCombos = RiskAnalyzer::analyzeK(data, data.parameters.riskAnalysis);
-        AssignmentWriter::writeRiskAnalysisCombinations(riskyCombos, data.parameters.riskAnalysis, out);
     }
 }
