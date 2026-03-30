@@ -4,9 +4,6 @@
 *.exe
 *.out
 *.app
-# If your executable has a specific name, add it here:
-main
-my_program
 
 # --- Doxygen Output ---
 html/
