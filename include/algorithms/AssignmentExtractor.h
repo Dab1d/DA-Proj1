@@ -22,7 +22,7 @@ public:
      * @param data Loaded conference instance used to map graph nodes back to
      * reviewer and submission identifiers.
      * @return Extracted reviewer-submission assignments.
-     * @complexity O(V + E)
+     * @note Time complexity: O(V + E)
      */
     static std::vector<Assignment> extract(
         const Graph<int>& g,
@@ -61,7 +61,7 @@ public:
      * @param data Loaded conference instance containing submission metadata and
      * minimum review requirements.
      * @return One risk entry per submission that is still missing reviews.
-     * @complexity O(V + E)
+     * @note Time complexity: O(V + E)
      */
     static std::vector<RiskEntry> getMissing(
         const Graph<int>& g,

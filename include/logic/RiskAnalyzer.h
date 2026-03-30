@@ -18,7 +18,8 @@ public:
      *        still allows a feasible assignment.
      * @param data Loaded conference instance.
      * @return List of reviewer IDs whose absence makes assignment infeasible.
-     * @complexity O(R * (R*S + V*E^2)) where R=reviewers, S=submissions
+     * @note Time complexity: O(R * (R*S + V*E^2)) where R = reviewers and
+     * S = submissions.
      */
     static std::vector<int> analyzeK1(const LoadedConferenceData& data) {
         std::vector<int> riskyReviewers;
@@ -44,7 +45,7 @@ public:
      * @param K Number of reviewers removed in each scenario.
      * @return List of reviewer ID combinations whose absence makes assignment
      * infeasible.
-     * @complexity O(C(R,K) * (R*S + V*E^2)) — exponential in K
+     * @note Time complexity: O(C(R,K) * (R*S + V*E^2)) — exponential in K.
      */
     static std::vector<std::vector<int>> analyzeK(const LoadedConferenceData& data, int K) {
         std::vector<std::vector<int>> riskyCombinations;
@@ -73,7 +74,8 @@ private:
      * @param combo Current combination under construction.
      * @param required Minimum total number of required reviews.
      * @param result Accumulated infeasible reviewer combinations by ID.
-     * @complexity O(C(R,K) * (R*S + V*E^2)) over the full recursion tree
+     * @note Time complexity: O(C(R,K) * (R*S + V*E^2)) over the full
+     * recursion tree.
      */
     static void combinationsHelper(
         const LoadedConferenceData& data,

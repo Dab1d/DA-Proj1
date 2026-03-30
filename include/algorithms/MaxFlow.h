@@ -38,8 +38,8 @@ public:
      * Repeatedly finds augmenting paths using BFS on the residual graph
      * and augments flow until no more paths exist.
      *
-     * @complexity O(V * E^2) — BFS is O(V+E), and there are at most O(V*E)
-     *             augmenting paths before the algorithm terminates.
+     * @note Time complexity: O(V * E^2) — BFS is O(V+E), and there are at most
+     * O(V*E) augmenting paths before the algorithm terminates.
      *
      * @return Total max flow value
      */
@@ -68,7 +68,7 @@ private:
      * Residual capacity of edge e = e.weight - e.flow
      * For the reverse edge: its weight is 0, so residual = -e_forward.flow
      *
-     * @complexity O(V + E)
+     * @note Time complexity: O(V + E)
      * @return Bottleneck flow of the path found, or 0 if no path exists.
      */
     template <class T>
@@ -111,7 +111,7 @@ private:
     /**
      * @brief Traces back the path from sink to source using path pointers,
      *        finds the bottleneck, and updates flow on all edges.
-     * @complexity O(V)
+     * @note Time complexity: O(V)
      */
     template <class T>
     static double augment(Vertex<T>* src, Vertex<T>* snk) {

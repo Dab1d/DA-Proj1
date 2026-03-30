@@ -30,7 +30,7 @@ public:
      * @param data Loaded conference instance.
      * @return Flow network with source, sink, reviewer nodes, and submission
      * nodes connected according to primary-domain compatibility.
-     * @complexity O(R * S) where R = reviewers, S = submissions
+     * @note Time complexity: O(R * S) where R = reviewers and S = submissions.
      */
     static Graph<int> build(const LoadedConferenceData&data ){
       return buildExcludingSet(data,{});
@@ -41,7 +41,7 @@ public:
      * @param data Loaded conference instance.
      * @param excludeIdx Reviewer index in `data.reviewers` to exclude.
      * @return Flow network without the selected reviewer node capacity.
-     * @complexity O(R * S) where R = reviewers, S = submissions
+     * @note Time complexity: O(R * S) where R = reviewers and S = submissions.
      */
     static Graph<int> buildExcluding(const LoadedConferenceData& data, int excludeIdx) {
         std::vector<int> excluded = {excludeIdx};
@@ -53,7 +53,7 @@ public:
      * @param data Loaded conference instance.
      * @param excludeIndices Reviewer indices in `data.reviewers` to exclude.
      * @return Flow network without the selected reviewers.
-     * @complexity O(R * S) where R = reviewers, S = submissions
+     * @note Time complexity: O(R * S) where R = reviewers and S = submissions.
      */
     static Graph<int> buildExcludingSet(const LoadedConferenceData& data,
                                          const std::vector<int>& excludeIndices) {
