@@ -8,8 +8,8 @@ class InteractiveMode {
 public:
     /**
      * @brief Runs the interactive menu loop.
-     * @time_complexity O(m + delegated action costs), where m is the number of
-     * menu iterations performed by the user.
+     * @note Time complexity: O(m + delegated action costs), where m is the
+     * number of menu iterations performed by the user.
      */
     static void run();
 };

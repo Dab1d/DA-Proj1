@@ -24,7 +24,7 @@ struct LoadedConferenceData {
      * @brief Checks whether any dataset has already been loaded.
      * @return `true` if a source file was successfully parsed, `false`
      * otherwise.
-     * @time_complexity O(1)
+     * @note Time complexity: O(1)
      */
     bool isLoaded() const;
 };
@@ -44,9 +44,9 @@ public:
      * @param data Parsed output data on success.
      * @param errors Validation or parsing errors found while loading.
      * @return true if the file was successfully parsed and validated.
-     * @time_complexity O(L + S log S + R log R), where L is the number of
-     * lines in the input file, S is the number of loaded submissions, and R is
-     * the number of loaded reviewers.
+     * @note Time complexity: O(L + S log S + R log R), where L is the number
+     * of lines in the input file, S is the number of loaded submissions, and R
+     * is the number of loaded reviewers.
      */
     static bool loadFromCsv(const std::string &filePath,
                             LoadedConferenceData &data,

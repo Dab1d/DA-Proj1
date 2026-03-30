@@ -11,9 +11,9 @@ public:
     /**
      * @brief Loads a data file by asking the user for its path.
      * @param data Dataset storage updated on successful load.
-     * @time_complexity O(L + S log S + R log R), where L is the number of
-     * lines in the chosen file, S is the number of submissions, and R is the
-     * number of reviewers.
+     * @note Time complexity: O(L + S log S + R log R), where L is the number
+     * of lines in the chosen file, S is the number of submissions, and R is
+     * the number of reviewers.
      */
     static void loadDataFile(LoadedConferenceData &data);
 };
