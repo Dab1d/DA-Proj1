@@ -29,4 +29,10 @@ cmake_install.cmake
 
 # --- OS generated files ---
 .DS_Store
+
 Thumbs.db
+
+
+DA2026_PRJ1_T07_G07/
+Doxyfile
+
